@@ -1,13 +1,4 @@
-import {
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@mui/material";
+import { Alert } from "@mui/material";
 
 import React, { useState } from "react";
 
@@ -20,6 +11,9 @@ import AddMaterial from "./AddMaterial";
 function Home() {
   return (
     <div>
+      <Alert severity="info">
+        Application will take a maximum 30s time at first time for loading 😃
+      </Alert>
       <Navbar />
       {/* <div className="main-content-wrapper">
         <Container maxWidth="xl" className="main-content">

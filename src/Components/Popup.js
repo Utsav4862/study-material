@@ -1,4 +1,11 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "reactjs-popup/dist/index.css";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -15,8 +22,10 @@ function PopupComp({ pop, setPop }) {
   const [status, setStatus] = useState();
   const [error, setError] = useState(false);
   const [valid, setValid] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(true);
 
   const login = async () => {
+    setIsSubmitted(false);
     let { data } = await axios.post(`${URL}/student/login`, {
       email,
       password,
@@ -29,13 +38,16 @@ function PopupComp({ pop, setPop }) {
       setStudent(data.student);
       setIsLoggedIn(true);
       setPop(false);
+      setIsSubmitted(true);
     } else {
+      setIsSubmitted(true);
       setError(true);
       setStatus("User does not Exists");
     }
   };
   const signup = async () => {
-    if (name != "" && email != "" && !email.includes("@") && password != "") {
+    setIsSubmitted(false);
+    if (name != "" && email != "" && email.includes("@") && password != "") {
       let { data } = await axios.post(`${URL}/student/signup`, {
         name: name,
         email: email,
@@ -43,13 +55,16 @@ function PopupComp({ pop, setPop }) {
       });
 
       if (data.student) {
+        setIsSubmitted(true);
         setError(false);
         setStatus("Your Account Successfully Created!!");
       } else {
         setError(true);
+        setIsSubmitted(true);
         setStatus("Email address already Exists!!!");
       }
     } else {
+      setIsSubmitted(true);
       setValid(false);
     }
   };
@@ -163,7 +178,13 @@ function PopupComp({ pop, setPop }) {
             Login
           </Button>
         )}
-
+        {!isSubmitted ? (
+          <div style={{ textAlign: "center" }}>
+            <CircularProgress style={{ color: "#21b6ae" }} />
+          </div>
+        ) : (
+          ""
+        )}
         <Typography
           id="modal-modal-title"
           variant="h6"

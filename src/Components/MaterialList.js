@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Container,
   MenuItem,
   Modal,
@@ -33,7 +34,7 @@ function MaterialList() {
   const [canUpload, setCanUpload] = useState(true);
   const [semester, setSemester] = useState("");
   const [allMat, setAllMat] = useState([]);
-  const [date, setDate] = useState();
+  const [isLoad, setIsLoad] = useState(false);
   const navigate = useNavigate();
 
   const formatDate = (dt) => {
@@ -54,18 +55,22 @@ function MaterialList() {
   };
 
   const searchMaterial = async (semester, search) => {
+    setIsLoad(true);
     let { data } = await axios.post(`${URL}/material/search/`, {
       semester,
       search,
     });
 
     setAllMat(data);
+    setIsLoad(false);
   };
 
   const fetchMaterials = async () => {
+    setIsLoad(true);
     let { data } = await axios.get(`${URL}/material/all`);
 
     setAllMat(data);
+    setIsLoad(false);
   };
   useEffect(() => {
     fetchMaterials();
@@ -124,6 +129,13 @@ function MaterialList() {
           }}
           onChange={(e) => setSearch(e.target.value)}
         />
+        {isLoad ? (
+          <div style={{ textAlign: "center" }}>
+            <CircularProgress style={{ color: "#21b6ae" }} />
+          </div>
+        ) : (
+          ""
+        )}
 
         <TableContainer>
           <Table>

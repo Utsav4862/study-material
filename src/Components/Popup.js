@@ -7,13 +7,14 @@ import { URL } from "../API/api";
 import { DetailState } from "../Context/Details";
 
 function PopupComp({ pop, setPop }) {
-  const { student, setStudent } = DetailState();
+  const { student, setStudent, setIsLoggedIn, isLoggedIn } = DetailState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [toggle, setToggle] = useState(false);
   const [status, setStatus] = useState();
   const [error, setError] = useState(false);
+  const [valid, setValid] = useState(true);
 
   //   console.log("vhvg");
 
@@ -25,26 +26,35 @@ function PopupComp({ pop, setPop }) {
     console.log(data);
     if (data.token) {
       setError(false);
-      setStatus("You are Logged In to Your Account!!");
+
       localStorage.setItem("user", data.token);
       setStudent(data.student);
+      setIsLoggedIn(true);
       setPop(false);
+    } else {
+      console.log("errrr");
+      setError(true);
+      setStatus("User does not Exists");
     }
   };
   const signup = async () => {
     console.log(name, email, password);
-    let { data } = await axios.post(`${URL}/student/signup`, {
-      name: name,
-      email: email,
-      password: password,
-    });
-    console.log(data.student);
-    if (data.student) {
-      setError(false);
-      setStatus("Your Account Successfully Created!!");
+    if (name != "" && email != "" && !email.contains("@") && password != "") {
+      let { data } = await axios.post(`${URL}/student/signup`, {
+        name: name,
+        email: email,
+        password: password,
+      });
+      console.log(data.student);
+      if (data.student) {
+        setError(false);
+        setStatus("Your Account Successfully Created!!");
+      } else {
+        setError(true);
+        setStatus("Email address already Exists!!!");
+      }
     } else {
-      setError(true);
-      setStatus("Email address already Exists!!!");
+      setValid(false);
     }
   };
   const style = {
@@ -176,7 +186,12 @@ function PopupComp({ pop, setPop }) {
             fontSize: "16px",
           }}
           variant="contained"
-          onClick={() => setToggle(!toggle)}
+          onClick={() => {
+            setToggle(!toggle);
+            setError(false);
+            setStatus("");
+            setValid(true);
+          }}
         >
           {toggle ? "Login Now" : "Register Now"}
         </Button>
@@ -192,6 +207,21 @@ function PopupComp({ pop, setPop }) {
         >
           {status}
         </Typography>
+
+        {!valid ? (
+          <Typography
+            ypography
+            id="modal-modal-title"
+            variant="h6"
+            color="red"
+            //   component="span"
+            align="center"
+          >
+            Enter Valid Details
+          </Typography>
+        ) : (
+          ""
+        )}
       </Box>
     </Modal>
   );

@@ -4,8 +4,13 @@ const DetailContext = createContext();
 
 function Details({ children }) {
   const [student, setStudent] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
+
   return (
-    <DetailContext.Provider value={{ student, setStudent }}>
+    <DetailContext.Provider
+      value={{ student, setStudent, isLoggedIn, setIsLoggedIn }}
+    >
       {children}
     </DetailContext.Provider>
   );

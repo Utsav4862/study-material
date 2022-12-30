@@ -22,13 +22,10 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import { useNavigate } from "react-router-dom";
 import { DetailState } from "../Context/Details";
 import { Box } from "@mui/system";
-
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { URL } from "../API/api";
-import { getTkn } from "../Func/extra";
+
 import axios from "axios";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { MenuTwoTone } from "@mui/icons-material";
 
 function MaterialList() {
   const { student, setIsLoggedIn, isLoggedIn } = DetailState();
@@ -62,13 +59,12 @@ function MaterialList() {
       search,
     });
 
-    console.log(data);
     setAllMat(data);
   };
 
   const fetchMaterials = async () => {
     let { data } = await axios.get(`${URL}/material/all`);
-    console.log(data, "matt");
+
     setAllMat(data);
   };
   useEffect(() => {
@@ -139,6 +135,7 @@ function MaterialList() {
                       style={{
                         fontWeight: "700",
                       }}
+                      key={head}
                       align={head == "Material" ? "" : "right"}
                     >
                       {head}
@@ -150,12 +147,13 @@ function MaterialList() {
 
             <TableBody>
               {allMat.map((mat) => (
-                <TableRow style={{}}>
+                <TableRow style={{}} key={mat._id}>
                   <TableCell
                     style={{ color: "blue", cursor: "pointer", fontSize: 20 }}
                     component={"th"}
                     scope="row"
                     onClick={() => window.open(mat.pdf)}
+                    align="left"
                   >
                     {mat.material} <OpenInNewIcon fontSize="18" />
                   </TableCell>

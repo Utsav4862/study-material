@@ -20,7 +20,6 @@ function Navbar() {
   const { student, setStudent, isLoggedIn, setIsLoggedIn } = DetailState();
   const [open, setOpen] = useState(false);
   const popUpHandle = () => {
-    // console.log("sdf");
     setPop(true);
   };
   const getCurrentUser = async () => {
@@ -33,7 +32,7 @@ function Navbar() {
         },
       };
       let { data } = await axios.get(`${URL}/student/currentUser`, config);
-      console.log(data, "sd");
+
       if (data.error) {
         console.log("Error");
       } else {
@@ -44,16 +43,10 @@ function Navbar() {
   };
 
   const openProfile = () => {
-    console.log(open);
     setOpen(!open);
   };
-  useEffect(() => {
-    console.log(student);
-  }, [student]);
 
   useEffect(() => {
-    console.log(isLoggedIn);
-    console.log("called");
     getCurrentUser();
     // if (student != undefined) {
     //   setIsLoggedIn(true);
@@ -64,7 +57,12 @@ function Navbar() {
     <div className="navbar">
       {isLoggedIn ? (
         <div
-          style={{ display: "flex", height: "100%", alignItems: "center" }}
+          style={{
+            display: "flex",
+            height: "100%",
+            alignItems: "center",
+            cursor: "pointer",
+          }}
           onClick={openProfile}
         >
           <Avatar src={student.profile_img} />{" "}

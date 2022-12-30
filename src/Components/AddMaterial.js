@@ -31,14 +31,12 @@ function AddMaterial() {
 
   const navigate = useNavigate();
   const handleUpload = (e) => {
-    console.log(e.target.files[0]);
     setPdf(e.target.files[0]);
     const blob = new Blob([e.target.files[0]]);
     const fr = new FileReader();
     fr.readAsDataURL(blob);
     fr.addEventListener("load", () => {
       let res = fr.result;
-      console.log(res);
     });
     setUpload(true);
   };
@@ -76,7 +74,6 @@ function AddMaterial() {
         let { data } = await axios.post(`${URL}/material/upload`, fd, config);
         setIsSubmitted(true);
         setToggle(true);
-        console.log(data);
       });
     } else {
       setError(true);

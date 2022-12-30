@@ -16,14 +16,12 @@ function PopupComp({ pop, setPop }) {
   const [error, setError] = useState(false);
   const [valid, setValid] = useState(true);
 
-  //   console.log("vhvg");
-
   const login = async () => {
     let { data } = await axios.post(`${URL}/student/login`, {
       email,
       password,
     });
-    console.log(data);
+
     if (data.token) {
       setError(false);
 
@@ -32,20 +30,18 @@ function PopupComp({ pop, setPop }) {
       setIsLoggedIn(true);
       setPop(false);
     } else {
-      console.log("errrr");
       setError(true);
       setStatus("User does not Exists");
     }
   };
   const signup = async () => {
-    console.log(name, email, password);
-    if (name != "" && email != "" && !email.contains("@") && password != "") {
+    if (name != "" && email != "" && !email.includes("@") && password != "") {
       let { data } = await axios.post(`${URL}/student/signup`, {
         name: name,
         email: email,
         password: password,
       });
-      console.log(data.student);
+
       if (data.student) {
         setError(false);
         setStatus("Your Account Successfully Created!!");

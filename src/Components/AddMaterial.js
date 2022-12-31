@@ -19,8 +19,8 @@ import { URL } from "../API/api";
 
 function AddMaterial() {
   const [semester, setSemester] = useState("");
-  const [material, setMaterial] = useState();
-  const [subject, setSubject] = useState();
+  const [material, setMaterial] = useState("");
+  const [subject, setSubject] = useState("");
   const [pdf, setPdf] = useState();
   const [isSubmitted, setIsSubmitted] = useState(true);
   const [upload, setUpload] = useState(false);

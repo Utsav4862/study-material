@@ -26,7 +26,7 @@ function AddMaterial() {
   const [upload, setUpload] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [error, setError] = useState(false);
-
+  const [ms, setMs] = useState(false);
   const fileInput = useRef();
 
   const navigate = useNavigate();
@@ -72,6 +72,10 @@ function AddMaterial() {
         };
 
         let { data } = await axios.post(`${URL}/material/upload`, fd, config);
+
+        if (data.error) {
+          setMs(true);
+        }
         setIsSubmitted(true);
         setToggle(true);
       });
@@ -114,6 +118,13 @@ function AddMaterial() {
       ) : (
         ""
       )}
+      {/* {ms ? (
+        <Alert severity="error" sx={{ width: "100%" }}>
+          file size should be less than 10MB
+        </Alert>
+      ) : (
+        ""
+      )} */}
       <TextField
         placeholder="Material Name"
         fullWidth
@@ -153,8 +164,9 @@ function AddMaterial() {
           color="primary"
           onClick={() => fileInput.current.click()}
         >
-          upload file
+          upload a PDF
         </Button>
+        <Typography marginTop={1}>(Max 10MB allowed)</Typography>
       </div>
       <input
         ref={fileInput}
